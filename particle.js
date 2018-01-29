@@ -10,18 +10,14 @@ var particle = {
     bounce: 0.9,
     friction: 1,
     gravity: 0,
-    cw: 0,
-    ch: 0,
 
-    create: function (x ,y ,speed, direction, grav, canvasWidth, canvasHeight){
+    create: function (x ,y ,speed, direction, grav){
         var obj = Object.create(this);
         obj.x =  x;
         obj.y =  y;
         obj.xOld =  x - Math.cos(direction)*speed;
         obj.yOld =  y - Math.sin(direction)*speed;
         obj.gravity =  grav || 0;
-        obj.cw = canvasWidth;
-        obj.ch = canvasHeight;
         return obj;
     },
 
@@ -30,7 +26,7 @@ var particle = {
         this.fy = fy;
     },
 
-    update: function(){
+    update: function(canvas){
         var vx = (this.x - this.xOld)*this.friction,
             vy = (this.y - this.yOld)*this.friction;
 
@@ -46,30 +42,39 @@ var particle = {
         this.fx = 0;
         this.fy = 0;
 
-        if(this.x > this.cw){
-            this.x = this.cw;
+
+        if(this.x > canvas.width/2){
+            this.x = canvas.width/2;
             this.xOld = this.x + vx*this.bounce;
         }
-        else if(this.x < 0){
-            this.x = 0;
+        else if(this.x < -canvas.width/2){
+            this.x = -canvas.width/2;
             this.xOld = this.x + vx*this.bounce;
         }
-        if(this.y > this.ch){
-            this.y = this.ch;
+        if(this.y > canvas.height/2){
+            this.y = canvas.height/2;
             this.yOld = this.y + vy*this.bounce;
         }
-        else if(this.y < 0){
-            this.y = 0;
+        else if(this.y < -canvas.height/2){
+            this.y = -canvas.height/2;
             this.yOld = this.y + vy*this.bounce;
         }
     },
 
-    render: function(){
-        var context = canvas.getContext("2d");
+    render: function(context){
         context.beginPath();
-        context.fillStyle = 'hsl('+ (Math.atan2(this.x-this.xOld, this.y-this.yOld))*360/(Math.PI * 2) +',100%,50%)';
+        context.fillStyle = 'hsla('+ (Math.atan2(this.x-this.xOld, this.y-this.yOld))*360/(Math.PI * 2) +',100%,50%,1)';
         context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         context.fill();
     },
+
+    paint: function(context){
+        context.lineWidth = this.radius;
+        context.beginPath();
+        context.moveTo(this.xOld, this.yOld);
+        context.lineTo(this.x, this.y);
+        context.strokeStyle = 'hsla('+ (Math.atan2(this.x-this.xOld, this.y-this.yOld))*360/(Math.PI * 2) +',100%,50%,1)';
+        context.stroke();
+    }
 
 };
