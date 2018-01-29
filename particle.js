@@ -11,13 +11,14 @@ var particle = {
     friction: 1,
     gravity: 0,
 
-    create: function (x ,y ,speed, direction, grav){
+    create: function (x ,y ,speed, direction, grav, mass){
         var obj = Object.create(this);
         obj.x =  x;
         obj.y =  y;
         obj.xOld =  x - Math.cos(direction)*speed;
         obj.yOld =  y - Math.sin(direction)*speed;
         obj.gravity =  grav || 0;
+        obj.mass = mass;
         return obj;
     },
 
@@ -36,8 +37,8 @@ var particle = {
         this.x += vx ;
         this.y += vy ;
         this.y += this.gravity;
-        this.x += this.fx;
-        this.y += this.fy;
+        this.x += this.fx/this.mass;
+        this.y += this.fy/this.mass;
 
         this.fx = 0;
         this.fy = 0;
