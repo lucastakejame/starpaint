@@ -68,6 +68,14 @@ window.onload = function(){
 				}
 			}
 			break;
+			case 't':
+			{
+				var turnDegrees = 10;
+				for(var i = 0; i < numParticles; i++) {
+					particles[i].rotate(turnDegrees);
+				}
+			}
+			break;
 			case 'ArrowUp':
 			{
 				var p = 1.1; // linear interpolation
