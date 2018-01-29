@@ -68,6 +68,26 @@ window.onload = function(){
 				}
 			}
 			break;
+			case 'ArrowUp':
+			{
+				var p = 1.1; // linear interpolation
+				for(var i = 0; i < numParticles; i++) {
+					particles[i].xOld = (1-p)*particles[i].x + p*particles[i].xOld;
+					particles[i].yOld = (1-p)*particles[i].y + p*particles[i].yOld;
+				}
+			}
+			break;
+			case 'ArrowDown':
+			{
+
+				var p = 0.9; // linear interpolation
+				for(var i = 0; i < numParticles; i++) {
+					particles[i].xOld = (1-p)*particles[i].x + p*particles[i].xOld;
+					particles[i].yOld = (1-p)*particles[i].y + p*particles[i].yOld;
+				}
+			}
+			break;
+
 		}
 	} );
 
