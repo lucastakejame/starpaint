@@ -7,7 +7,7 @@ window.onload = function(){
 		width = canvas.width = paintcanvas.width = window.innerWidth,
 		height = canvas.height = paintcanvas.height = window.innerHeight,
 		particles = [],
-		numParticles = 500;
+		numParticles = 100;
 
 	context.translate(width / 2, height / 2);
 	paintcontext.translate(width / 2, height / 2);
@@ -22,6 +22,7 @@ window.onload = function(){
 	var mousey = height/2;
 	var applyForce = false;
 	var paint = false;
+	var shouldBounce = true;
 
 	// events
 	document.addEventListener("mousedown", function(event){
@@ -46,6 +47,28 @@ window.onload = function(){
 	document.body.addEventListener("mousemove", function(event) {
 		mousex = event.clientX - width/2;
 		mousey = event.clientY - height/2;
+	} );
+
+	document.body.addEventListener("keydown", function(event) {
+		switch(event.key){
+			case 'Backspace': //backspace
+			{
+				paintcontext.clearRect(-width / 2, -height / 2, width, height);
+			}
+			break;
+			case 'b':
+			{
+				shouldBounce ^= 1;
+			}
+			break;
+			case 'x':
+			{
+				for(var i = 0; i < numParticles; i++) {
+					particles[i].reset(mousex, mousey);
+				}
+			}
+			break;
+		}
 	} );
 
 	// disables context menu
@@ -78,7 +101,7 @@ window.onload = function(){
 
 				p.applyForce(0.25*dx, 0.25*dy);
 			}
-			p.update(canvas);
+			p.update(canvas, shouldBounce);
 
 			if(paint){
 				p.paint(paintcontext);

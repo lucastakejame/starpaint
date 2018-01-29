@@ -26,7 +26,7 @@ var particle = {
         this.fy = fy;
     },
 
-    update: function(canvas){
+    update: function(canvas, shouldBounce){
         var vx = (this.x - this.xOld)*this.friction,
             vy = (this.y - this.yOld)*this.friction;
 
@@ -42,22 +42,23 @@ var particle = {
         this.fx = 0;
         this.fy = 0;
 
-
-        if(this.x > canvas.width/2){
-            this.x = canvas.width/2;
-            this.xOld = this.x + vx*this.bounce;
-        }
-        else if(this.x < -canvas.width/2){
-            this.x = -canvas.width/2;
-            this.xOld = this.x + vx*this.bounce;
-        }
-        if(this.y > canvas.height/2){
-            this.y = canvas.height/2;
-            this.yOld = this.y + vy*this.bounce;
-        }
-        else if(this.y < -canvas.height/2){
-            this.y = -canvas.height/2;
-            this.yOld = this.y + vy*this.bounce;
+        if(shouldBounce){
+            if(this.x > canvas.width/2){
+                this.x = canvas.width/2;
+                this.xOld = this.x + vx*this.bounce;
+            }
+            else if(this.x < -canvas.width/2){
+                this.x = -canvas.width/2;
+                this.xOld = this.x + vx*this.bounce;
+            }
+            if(this.y > canvas.height/2){
+                this.y = canvas.height/2;
+                this.yOld = this.y + vy*this.bounce;
+            }
+            else if(this.y < -canvas.height/2){
+                this.y = -canvas.height/2;
+                this.yOld = this.y + vy*this.bounce;
+            }
         }
     },
 
@@ -75,6 +76,13 @@ var particle = {
         context.lineTo(this.x, this.y);
         context.strokeStyle = 'hsla('+ (Math.atan2(this.x-this.xOld, this.y-this.yOld))*360/(Math.PI * 2) +',100%,50%,1)';
         context.stroke();
+    },
+
+    reset: function(mousex , mousey){
+        this.x = mousex;
+        this.y = mousey;
+        this.xOld = mousex + (Math.random()-0.5)*5;
+        this.yOld = mousey + (Math.random()-0.5)*5;
     }
 
 };
