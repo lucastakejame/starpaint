@@ -50,13 +50,13 @@ window.onload = function(){
             }
             if(params.increaseVelocity)
             {
-                var per = increaseFactor; // linear interpolation
+                var per = params.increaseFactor; // linear interpolation
                 p.xOld = (1-per)*p.x + per*p.xOld;
                 p.yOld = (1-per)*p.y + per*p.yOld;
             }
             if(params.decreaseVelocity)
             {
-                var per = decreaseFactor; // linear interpolation
+                var per = params.decreaseFactor; // linear interpolation
                 p.xOld = (1-per)*p.x + per*p.xOld;
                 p.yOld = (1-per)*p.y + per*p.yOld;
             }
