@@ -28,6 +28,11 @@ var particle = {
     },
 
     update: function(canvas, shouldBounce){
+        var xLim0 = -canvas.width/2;
+        var xLim1 = -xLim0;
+        var yLim0 = -canvas.height/2;
+        var yLim1 = -yLim0;
+
         var vx = (this.x - this.xOld)*this.friction,
             vy = (this.y - this.yOld)*this.friction;
 
@@ -43,22 +48,58 @@ var particle = {
         this.fx = 0;
         this.fy = 0;
 
+        // Using triangle similarity
         if(shouldBounce){
-            if(this.x > canvas.width/2){
-                this.x = canvas.width/2;
-                this.xOld = this.x + vx*this.bounce;
+            var newVx = (this.x - this.xOld)*this.bounce,
+                newVy = (this.y - this.yOld)*this.bounce;
+
+            if(this.x > xLim1){
+                // this.x = xLim1;
+                // this.xOld = this.x + vx*this.bounce;
+
+                var b = ((xLim1-this.xOld)*(this.y-this.yOld))/(this.x-this.xOld);
+                var c = (this.y-this.yOld) - b;
+
+                this.x = xLim1 - (this.x-xLim1)*this.bounce;
+                this.y = this.yOld + b + c*this.bounce;
+                this.xOld = this.x + newVx;
+                this.yOld = this.y - newVy;
+
             }
-            else if(this.x < -canvas.width/2){
-                this.x = -canvas.width/2;
-                this.xOld = this.x + vx*this.bounce;
+            else if(this.x < xLim0){
+                // this.x = xLim0;
+                // this.xOld = this.x + vx*this.bounce;
+                var b = ((xLim0-this.xOld)*(this.y-this.yOld))/(this.x-this.xOld);
+                var c = (this.y-this.yOld) - b;
+
+                this.x = xLim0 - (this.x-xLim0)*this.bounce;
+                this.y = this.yOld + b + c*this.bounce;
+                this.xOld = this.x + newVx;
+                this.yOld = this.y - newVy;
+
             }
-            if(this.y > canvas.height/2){
-                this.y = canvas.height/2;
-                this.yOld = this.y + vy*this.bounce;
+            if(this.y > yLim1){
+                // this.y = yLim1;
+                // this.yOld = this.y + vy*this.bounce;
+                var b = ((yLim1 - this.yOld)*(this.x-this.xOld))/(this.y-this.yOld);
+                var c = (this.x-this.xOld) - b;
+
+                this.y = yLim1 - (this.y-yLim1)*this.bounce;
+                this.x = this.xOld + b + c*this.bounce;
+                this.xOld = this.x - newVx;
+                this.yOld = this.y + newVy;
+
             }
-            else if(this.y < -canvas.height/2){
-                this.y = -canvas.height/2;
-                this.yOld = this.y + vy*this.bounce;
+            else if(this.y < yLim0){
+                // this.y = yLim0;
+                // this.yOld = this.y + vy*this.bounce;
+                var b = ((yLim0 - this.yOld)*(this.x-this.xOld))/(this.y-this.yOld);
+                var c = (this.x-this.xOld) - b;
+
+                this.y = yLim0 - (this.y-yLim0)*this.bounce;
+                this.x = this.xOld + b + c*this.bounce;
+                this.xOld = this.x - newVx;
+                this.yOld = this.y + newVy;
             }
         }
     },
