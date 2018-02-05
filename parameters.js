@@ -24,7 +24,7 @@ var InputHandle = (function (canvas, particles, paintcontext) {
             obj.params.mousey = event.clientY - canvas.height/2;
         }
         if(event.button == 1){
-            paintcontext.clearRect(-width / 2, -height / 2, width, height);
+            paintcontext.clearRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
         }
         if(event.button == 2){
             obj.params.paint = true;
