@@ -37,11 +37,14 @@ window.onload = function(){
                 var dx = params.mousex-p.x,
                     dy = params.mousey-p.y,
                     length = Math.sqrt(dx*dx + dy*dy);
-                    dx /= length;
-                    dy /= length;
+                if(length > 10)
+                {
+                    dx = dx/length || 0 ;
+                    dy = dy/length || 0 ;
 
-                // force of fixed intensity on mouse-position direction
-                p.applyForce(0.25*dx, 0.25*dy);
+                    // force of fixed intensity on mouse-position direction
+                    p.applyForce(0.25*dx, 0.25*dy);
+                }
             }
 
             if(params.rotateVelocity)
