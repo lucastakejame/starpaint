@@ -140,6 +140,21 @@ var particle = {
 
         this.xOld = this.x - newvx;
         this.yOld = this.y - newvy;
+    },
+
+    delirate: function(degrees){
+        var rad = (degrees/180) * Math.PI;
+
+        var vx = this.x - this.xOld;
+        var vy = this.y - this.yOld;
+        var cos_rad = Math.cos(rad);
+        var sin_rad = Math.sin(rad);
+
+        var newvx = vx*cos_rad + vy*sin_rad;
+        var newvy = vx*sin_rad - vy*cos_rad;
+
+        this.xOld = this.x - newvx;
+        this.yOld = this.y - newvy;
     }
 
 };

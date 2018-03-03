@@ -1,0 +1,22 @@
+canvas.showcanvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background-color: transparent;
+}
+
+canvas.paintcanvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 0;
+    background-color: black;
+}
+/*
+section.canvascontainer {
+    top: 100px;
+    left: 100px;
+    width : 100px;
+    height : 100px;
+}*/
