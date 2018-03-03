@@ -12,23 +12,62 @@ window.onload = function(){
     context.translate(width / 2, height / 2);
     paintcontext.translate(width / 2, height / 2);
 
-    var mode = 1;
+    var mode = 2;
 
+    var params = InputHandle(canvas, particles, paintcontext).params;
+
+
+    /*
+    *MODES SETUP
+    */
+    // mode 0
     // initialing particles
     for(var i = 0; i < numParticles; i++) {
         particles.push(particle.create(0, 0, Math.random()*4 +1, Math.random() * Math.PI *2, 0, 1));
     }
 
-    var params = InputHandle(canvas, particles, paintcontext).params;
 
+    // mode 1
     var game = chaosGame.create(0, 0, 1);
+
+
+    // mode 2
+    rangeX = [1,4.00];
+    rangeY = [0,1];
+
+    iterationWindowX = [rangeX[0],rangeX[0]];
+
+    canvasLimit = [width, height];
+    var bd = bifurcationDiagram.create(
+        rangeX,  // x interval visible in screen width
+        rangeY,  // y interval visible in screen height
+        canvasLimit, // canvas limits
+        100);   // max iterations per row.
 
     //clear paint canvas
     paintcontext.clearRect(-width / 2, -height / 2, width, height);
 
+    setup();
     update();
 
-    // compute star physics and stuff
+    // runs once
+    function setup(){
+        switch(mode){
+            case 2:
+            {
+                // translantes canvases to left bottom to facilitate
+                context.translate(- width/2, height/2);
+                paintcontext.translate(- width/2, height/2);
+                context.scale(1, -1);
+                paintcontext.scale(1, -1);
+
+                bd.drawAxis(paintcontext);
+            }
+        }
+    }
+
+
+    // runs every frame
     function update(){
         context.clearRect(-width / 2, -height / 2, width, height);
 
@@ -81,8 +120,6 @@ window.onload = function(){
 
                     p.render(context);
                 }
-
-
             }
             break;
 
@@ -100,6 +137,23 @@ window.onload = function(){
                 if(params.mouseRBDown){
                     game.iterate(paintcontext, 100);
                 }
+            }
+            break;
+
+            case 2:
+            {
+
+                // bd.drawAxis(paintcontext);
+
+                if(params.mouseLBDown){
+                    var delta = (rangeX[1]-rangeX[0])/10;
+                    if(iterationWindowX[1] + delta <= rangeX[1]){
+                        iterationWindowX = [iterationWindowX[1], iterationWindowX[1] + delta];
+                    }
+                }
+
+                bd.runDiagram(paintcontext, iterationWindowX);
+
             }
             break;
 
