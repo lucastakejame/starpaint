@@ -4,7 +4,7 @@ var bifurcationDiagram = {
     originLocation: [0, 0],  // where the plot origin will be in the canvas coordinate systen
     canvasLimits: [0, 0],
 
-    maxIterations: 100,
+    maxIterations: 10,
     initialPopulation: 0.5,
 
 
@@ -33,13 +33,15 @@ var bifurcationDiagram = {
     // Paint function in that range
     runDiagram: function(context, itRangeX){
 
-        var itrX = itRangeX;
+        var itrX = this.rangeX;
+        // var itrX = itRangeX;
 
         var width = this.canvasLimits[0];
         var height = this.canvasLimits[1];
 
         // translated to canvas coordinates
-        var itrXPixels = [Math.floor((itRangeX[0] - this.rangeX[0])*width/(this.rangeX[1] - this.rangeX[0])), Math.floor((itRangeX[1] - this.rangeX[0])*width/(this.rangeX[1] - this.rangeX[0]))];
+        var itrXPixels = [Math.floor((itRangeX[0] - this.rangeX[0])*width/(this.rangeX[1] - this.rangeX[0])),
+                         Math.floor((itRangeX[1] - this.rangeX[0])*width/(this.rangeX[1] - this.rangeX[0]))];
 
         for (var x = itrXPixels[0]; x < itrXPixels[1]; x++) {
             pixelToPointX = x*(this.rangeX[1] - this.rangeX[0])/(this.canvasLimits[0]-1) + this.rangeX[0];
@@ -51,11 +53,13 @@ var bifurcationDiagram = {
 
                 x1 = this.iterate(x1, pixelToPointX);
 
-                if(it > this.maxIterations/3)
+                // if(it > this.maxIterations*3/4)
                 {
                     var point = [pixelToPointX, x1];
                     this.renderPoint(context, point, 'hsla(' + x*100/(itrXPixels[1]-itrXPixels[0]) +
-                                                         ',100%,50%,' + it/this.maxIterations + ')');
+                                                           ',100%,50%,' +
+                                                           it/this.maxIterations +
+                                                           ')');
                 }
             }
 
